@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <head>
     <style>
        #map {
@@ -12,21 +14,19 @@
     <h3>My Google Maps Demo</h3>
 
 
-<form action="/foursquare" method="post">
-    <label for="input">Enter name: </label>
-    <input id="input" type="text" name="location" value="food">
-    <input type="submit" value="OK">
-</form>
+    <form action="/foursquare" method="post">
+      <label for="input">Enter name: </label>
+      <input id="input" type="text" name="location" value="food">
+      <input type="submit" value="OK">
+    </form>
 
-
-
+    <button type="button" onclick="getLatLong()">GetLatLong</button>
 
     <div id="map"></div>
-    <script>
-	  var imported = require('../server.js')
+    
+    <script>  
 	
       function initMap() {
-		//var obj = imported.getLatLngData()
 		//console.log(obj.lat);
         var uluru = {lat: -25.363, lng: 131.044};
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -38,6 +38,30 @@
           map: map
         });
       }
+
+      function getLatLong() {
+        console.log("inside latlong");
+
+        /*
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          
+          document.getElementById("map").innerHTML = "hello world";
+          console.log("got it");
+        }
+        */
+        }
+
+        $.ajax({
+          type: "GET",
+          url: "http://localhost:8000/latlng",
+          success: function(data) {
+            var dataobj = data;
+            console.log(data);
+          }
+        });
+      
+
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&callback=initMap">

@@ -21,6 +21,16 @@ app.post('/foursquare', function(req, res) {
 	res.sendFile(__dirname + '/public/index.html');
 });
 
+//sends answer back to angular request
+app.get('/latlng', function(req, res) {
+    var obj = getLatLng();
+	var object = {a: 1}
+	var derp = 10;
+	
+	res.json(obj);
+	
+});
+
 app.use(express.static('public'));
 
 app.listen(8000, function() {
