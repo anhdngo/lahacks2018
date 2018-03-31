@@ -37,8 +37,7 @@ function getVenues() {
 					rating = '<span class="rating">'+this.venue.rating+'</span>';
 				}
 
-				appendeddatahtml = '<div class="venue">
-        <h2><span>'+this.venue.name+'<img class="icon" src="'+icon+'"> '+rating+'</span></h2>'+address+phone+'</p><p><strong>Total Checkins:</strong> '+this.venue.stats.checkinsCount+'</p></div>';
+				appendeddatahtml = '<div class="venue"><h2><span>'+this.venue.name+'<img class="icon" src="'+icon+'"> '+rating+'</span></h2>'+address+phone+'</p><p><strong>Total Checkins:</strong> '+this.venue.stats.checkinsCount+'</p></div>';
 				$("#venues").append(appendeddatahtml);
 
 			});
