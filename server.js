@@ -41,7 +41,7 @@ app.listen(8000, function() {
 function getLatLng(){
 	var obj = {
 		lat: 34,
-		lng: 118
+		lng: -118
 	}
 	return obj
 }
