@@ -111,7 +111,10 @@
 
 <!-- google maps (anh) I've renamed buttons and added id/class names for styling-->
     <div id="map" class="blocks"></div>
-
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&libraries=visualization&callback=initMap"></script>
+		<script src="scripts.js"></script>
  <script>
       var numdatapoints = 100;
       var dataobj = {lat: 34,lng: -118}
@@ -143,13 +146,13 @@
 
 				var windows = [];
 				var markers = [];
-        var i = 0;
 
         for (var key in latLng_list){
 
           var infowindow = new google.maps.InfoWindow({
             content: latLng_list[key]["content"],
-            maxWidth: 100
+            maxWidth: 200,
+						height: 50
           });
 
 
@@ -159,6 +162,25 @@
             title: 'info'
           });
 
+					marker.addListener('click', function() {
+						console.log('not yet opened' + infowindow.content);
+          	infowindow.open(map, marker);
+						console.log('the' + infowindow.content + 'has been opened');
+        	});
+
+					// The code below makes all infowindows pop up without clicking.
+					/*
+					marker.addListener('click', function(marker) {
+						console.log('not yet opened' + infowindow.content);
+						infowindow.open(map, marker);
+						console.log('the' + infowindow.content + 'has been opened');
+					}(marker));
+					*/
+
+					// --------------------------------------------- //
+
+					// The code below does not work.
+					/*
           google.maps.event.addListener(marker, 'hover', function(marker) {
 						console.log("created event listener");
 							return function(){
@@ -177,10 +199,10 @@
                 //     }
                 // }
             }(marker));
+						*/
 
 					windows.push(infowindow);
           markers.push(marker);
-          i ++;
 
         }
 
@@ -310,7 +332,7 @@
 
 							latLng_list[name] = {
 								'location': {lat: llat, lng: llng},
-								'content': "<h1>{name}</h1><br><p>This is a {type} and {checkedIn} people have checked in here.</p>"
+								'content': '<h4>'+name+'</h4><br><p>This is a '+type+' and '+checkedIn+' people have checked in here.</p>'
 							};
 			    	  //var icon = base[index].venue.categories[0].icon;
 	/*
@@ -334,9 +356,6 @@
     </script>
 	</div>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&libraries=visualization&callback=initMap"></script>
-	<script src="scripts.js"></script>
+
 </body>
 </html>
