@@ -9,7 +9,7 @@
 <body>
 	<header>
 		<h1>trend finder</h1>
-		<h2 id="welcome">New connections. New relationships. Building a better community.</h2>
+		<h2 id="welcome">New trends. New connections. New relationships.</h2>
 
 	</header>
 			
@@ -22,20 +22,20 @@
 		  <!-- Full-width images with number and caption text -->
 		  <div class="mySlides fade">
 			<div class="numbertext">1 / 3</div>
-			<img src="https://www.latfusa.com/media/uploads/2017/10/04/lacma12.jpg" style="width:100%">
-			<div class="text">Caption Text</div>
+			<img src="https://jp.discoverlosangeles.com/sites/default/files/styles/wide_1280/public/lacma-urban-light.jpg?itok=HyVHuyOL" style="width:100%">
+			<div class="text">Los Angeles County Museum of Art, Los Angeles, CA</div>
 		  </div>
 
 		  <div class="mySlides fade">
 			<div class="numbertext">2 / 3</div>
-			<img src="https://www.freshcup.com/wp-content/uploads/2018/02/Artifact_MAIN_1015x575-894x372.jpg" style="width:100%">
-			<div class="text">Caption Two</div>
+			<img src="https://www.wheretraveler.com/sites/default/files/styles/wt17_promoted_large/public/images/bestia.jpg?itok=Wl29Y6es&timestamp=1453242340" style="width:100%">
+			<div class="text">Bestia, Los Angeles, CA</div>
 		  </div>
 
 		  <div class="mySlides fade">
 			<div class="numbertext">3 / 3</div>
-			<img src="https://www.ggp.com/content/dam/ggp-digital-assets/Images/Mall-Images/Exteriors/malloflouisiana-hero-04.jpg/_jcr_content/renditions/original.jpg" style="width:100%">
-			<div class="text">Caption Three</div>
+			<img src="https://cbsla.files.wordpress.com/2017/05/shutterstock_7761730.jpg?w=640&h=360&crop=1" style="width:100%">
+			<div class="text">The Grove, Los Angeles</div>
 		  </div>
 
 		  <!-- Next and previous buttons -->
@@ -45,23 +45,25 @@
 
 		<!-- The dots/circles -->
 		<div style="text-align:center">
+		
 		  <span class="dot" onclick="currentSlide(1)"></span> 
 		  <span class="dot" onclick="currentSlide(2)"></span> 
 		  <span class="dot" onclick="currentSlide(3)"></span> 
 		</div>
 	
-		<p class="blocks"><strong>Discover</strong> events in your community through More the Merrier, or upload your own events to be viewable by the community.
+		<p class="blocks"><strong>Discover</strong> new and trendy spots in your community through <em>Trend Finder</em>.
 			<br><br>
-			<strong>Explore</strong> surrounding businesses, parks, or venues in the area to find out everything your growing communities have to offer!
+			<strong>Explore</strong> surrounding businesses, parks, or venues in the area to find out everything your community has to offer!
 			<br><br>
-			<strong>Find</strong> out whether nearby venues provide services or accommodations you need to feel comfortable.
+			<strong>Find</strong> out what new trends are to stay up to date!
 		</p>
 		
 	<div class="blocks" style="width: 28%;">
-		<h4>Find an event</h4>
+		<h4>What's hot near you?</h4>
 			<form id="mapsearch">
-				<input id="query">
-				<button id="submitbtn" type="button" onclick="queryFoursquare()">Enter Keyword</button>
+				<input id="query" placeholder="Keyword" style="width:40%;">
+				<input id="coords" placeholder = "City" style="width:40%;">
+				<button id="submitbtn" type="button" onclick="queryFoursquare()" style="width:15%;">Search</button>
 			</form>
 	  <!--
 		<form id="mapsearch" action="/foursquare" method="post">
@@ -79,31 +81,34 @@
 		
 		<br>
 		
-		<h4>Find Trending Events
+		<h4>Find Trending Businesses</h4>
 			<form id="eventsearch">
-				<input>
-				<button id="submitbtn" type="button" onclick="()">Enter Location</button>
+				<input id='trend' placeholder='City'>
+				<button id="submitbtn" type="button" onclick="trendFoursquare()">Enter Location</button>
 			</form>
 			
 		<div style="clear:both;"> </div>		
 	
-		<h4>Places nearby:</h4>
+		<h4>Places near Los Angeles, CA:</h4>
 			<div style="clear:both;"> </div>		
 			<div>
-				<img class="nearbyphoto" src="#" alt="Nearby Location">
-				<img class="nearbyphoto" src="#" alt="Nearby Location">
-				<img class="nearbyphoto" src="#" alt="Nearby Location">
+				<img class="nearbyphoto" src="https://lh5.googleusercontent.com/p/AF1QipO2s-VaTXq5s3yDNS2OScTIo2rZfhkSe9R_LJE7=w240-h160-k-no" alt="Nearby Location">
+				<img class="nearbyphoto" src="https://media-cdn.tripadvisor.com/media/photo-s/08/a8/dc/12/chick-fil-a-of-ucla.jpg" alt="Nearby Location">
+				<img class="nearbyphoto" src="https://lh5.googleusercontent.com/p/AF1QipOI5Cfch8y8R5R1dX48eEAY_hN0tFFBh4uK6kc9=w213-h160-k-no" alt="Nearby Location">
 			</div>
 	</div>
 
 <!-- google maps (anh) I've renamed buttons and added id/class names for styling-->
     <div id="map" class="blocks"></div>
 	
- <script>
-      var numdatapoints = 100;  
+<script>
+      var numdatapoints = 100;
       var dataobj = {lat: 34,lng: -118}
       var map, heatmap, jsondata;
-	  var query_name = document.getElementById("query").value;
+			var trend_loc = document.getElementById("trend").value;
+			var latLng_list = {};
+			var windows = [];
+			var markers = [];
       function initMap() {
         //create google map
 		map = new google.maps.Map(document.getElementById('map'), {
@@ -117,17 +122,57 @@
         });
 		*/
         updateHeatMap();
+				updateMarkerMap();
       };
+			function updateMarkerMap() {
+				windows = [];
+				markers = [];
+				i = 0;
+        for (var key in latLng_list){
+          var infowindow = new google.maps.InfoWindow({
+            content: latLng_list[key]["content"],
+            maxWidth: 200,
+						height: 50
+          });
+          var marker = new google.maps.Marker({
+            position: latLng_list[key]["location"],
+            map: map,
+            title: 'info'
+          });
+					marker.addListener('click', function() {
+						console.log(windows);
+						index = 0;
+						for (var j = 0; j < markers.length; j++){
+							if (this === markers[j]){
+								index = j;
+							}
+						}
+          	windows[index].open(map, this);
+				    for (var j = 0; j < windows.length; j++){
+				      if(j != index){
+				        windows[j].close();
+				      }
+				    }
+        	});
+					marker.addListener('click', function() {
+						console.log(windows);
+						console.log('not yet opened' + infowindow.content);
+          	windows[i].open(map, this);
+						console.log('the' + infowindow.content + 'has been opened');
+        	});
+					i ++;
+					windows.push(infowindow);
+          markers.push(marker);
+        }
+			}
       function updateHeatMap() {
         //create google heatmap
         heatmap = new google.maps.visualization.HeatmapLayer({
 		  data: getPoints(),
 		  map: map
 		});
-        
       }
       function getPoints() {
-        
         if(!jsondata){
           console.log("jsondata is undefined");
           return [];
@@ -144,34 +189,57 @@
         }
         console.log(datapoints);
         return datapoints;
-        
+        /*
+        return [
+          new google.maps.LatLng(37.782551, -122.445368),
+          new google.maps.LatLng(37.782745, -122.444586),
+          new google.maps.LatLng(37.782842, -122.443688),
+          new google.maps.LatLng(37.782919, -122.442815),
+          new google.maps.LatLng(37.782992, -122.442112),
+          new google.maps.LatLng(37.783100, -122.441461),
+          new google.maps.LatLng(37.783206, -122.440829),
+          new google.maps.LatLng(37.783273, -122.440324),
+          new google.maps.LatLng(37.783316, -122.440023),
+          new google.maps.LatLng(37.783357, -122.439794),
+          new google.maps.LatLng(37.783371, -122.439687),
+          new google.maps.LatLng(37.783368, -122.439666),
+          new google.maps.LatLng(37.783383, -122.439594),
+          new google.maps.LatLng(37.783508, -122.439525),
+          new google.maps.LatLng(37.783842, -122.439591),
+          new google.maps.LatLng(37.784147, -122.439668)
+        ];
+       */
       }
       function queryFoursquare(query) {
-	    
-	    var query_name = document.getElementById("query").value;
+	    	var query_name = document.getElementById("query").value;
+				var coord_name = document.getElementById("coords").value;
+				console.log('coords is'+coord_name);
         console.log(dataobj);
         var latlng = dataobj
         /*
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-          
           document.getElementById("map").innerHTML = "hello world";
           console.log("got it");
         }
         */
-        $.ajax({
-    type: "GET",
-    dataType: "jsonp",
-    cache: false,
-    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
-    success: function(data){
-        console.log(data);
-    	var base = data.response.groups[0].items
-    	$.each(base, function(index){
-    		var url = base[index].venue.url;
-    		var llat = base[index].venue.location.lat;
-    		var llng = base[index].venue.location.lng;
-    		var name = base[index].venue.name;
+	  $.ajax({
+	    type: "GET",
+	    dataType: "jsonp",
+	    cache: false,
+	    url: 'https://api.foursquare.com/v2/venues/explore?near=' + coord_name + '&radius=2000&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
+	    success: function(data){
+	        console.log(data);
+	    	var base = data.response.groups[0].items
+	    	$.each(base, function(index){
+	    		var url = base[index].venue.url;
+	    		var llat = base[index].venue.location.lat;
+	    		var llng = base[index].venue.location.lng;
+	    		var name = base[index].venue.name;
+				
+			 recenterMap(llat, llng);
+			 
+			 
     		//var icon = base[index].venue.categories[0].icon;
 /*
     		var myIcon = L.icon({
@@ -198,7 +266,54 @@
           console.log(data);
         }
       });
-      
+			function trendFoursquare(){
+				latLng_list = {};
+		    var trend_loc = document.getElementById("trend").value;
+	      console.log(trend_loc);
+				$.ajax({
+			    type: "GET",
+			    dataType: "jsonp",
+			    cache: false,
+			    url: 'https://api.foursquare.com/v2/venues/explore?near=' + trend_loc + '&radius=2000&limit=10&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&q=Trending&v=20180331',
+			    success: function(data){
+	        	console.log(data);
+	    			var base = data.response.groups[0].items
+			    	$.each(base, function(index){
+			    		var name = base[index].venue.name;
+			    		var llat = base[index].venue.location.lat;
+			    		var llng = base[index].venue.location.lng;
+			    		var type = base[index].venue.categories[0].name;
+							var checkedIn = base[index].venue.stats.checkinsCount;
+							
+							 recenterMap(llat, llng);
+							 
+							 
+							latLng_list[name] = {
+								'location': {lat: llat, lng: llng},
+								'content': '<h4>'+name+'</h4><br><br><p>This is a '+type+' and '+checkedIn+' people have checked in here.</p><img src="link here">'
+							};
+			    	  //var icon = base[index].venue.categories[0].icon;
+	/*
+	    		var myIcon = L.icon({
+	    		    iconUrl: icon,
+	    		    iconSize: [20, 20],
+	    		    iconAnchor: [10, 10],
+	    		    className: '4sq-icon'
+	    		});
+	    		var marker = L.marker([llat, llng], {icon: myIcon}).addTo(map);
+	    		var content = '<a href="' + url + '" />' + name + '</a>'
+	    		marker.bindPopup(content)
+	*/
+					});
+	      	updateMarkerMap();
+	      }
+	    });
+	   }
+	   
+     function recenterMap(lat, lng) {
+        var center = new google.maps.LatLng(lat, lng);
+        map.panTo(center);
+     }
     </script>
 	</div>
 	
