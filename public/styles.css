@@ -6,7 +6,6 @@ body {
 
 header {
   padding: 0;
-  padding-top: 5;
   margin: 0;
   margin-bottom: 10;
   width: 100%;
@@ -141,7 +140,9 @@ h6 {
 	border-color: #DE3A3A;
 	border-width: 5px;
 	float: left;
-	margin: 20px;
+	margin: 15px;
+	margin-left: 0;
+	margin-right: 20;
 }
 
 
