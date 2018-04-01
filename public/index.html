@@ -144,8 +144,9 @@
 
 			function updateMarkerMap() {
 
-				var windows = [];
-				var markers = [];
+				windows = [];
+				markers = [];
+				i = 0;
 
         for (var key in latLng_list){
 
@@ -163,44 +164,34 @@
           });
 
 					marker.addListener('click', function() {
+						console.log(windows);
+						index = 0;
+
+						for (var j = 0; j < markers.length; j++){
+							if (this === markers[j]){
+								index = j;
+							}
+						}
+
+          	windows[index].open(map, this);
+
+				    for (var j = 0; j < windows.length; j++){
+				      if(j != index){
+				        windows[j].close();
+				      }
+				    }
+        	});
+
+
+
+					marker.addListener('click', function() {
+						console.log(windows);
 						console.log('not yet opened' + infowindow.content);
-          	infowindow.open(map, marker);
+          	windows[i].open(map, this);
 						console.log('the' + infowindow.content + 'has been opened');
         	});
 
-					// The code below makes all infowindows pop up without clicking.
-					/*
-					marker.addListener('click', function(marker) {
-						console.log('not yet opened' + infowindow.content);
-						infowindow.open(map, marker);
-						console.log('the' + infowindow.content + 'has been opened');
-					}(marker));
-					*/
-
-					// --------------------------------------------- //
-
-					// The code below does not work.
-					/*
-          google.maps.event.addListener(marker, 'hover', function(marker) {
-						console.log("created event listener");
-							return function(){
-								console.log("not opened yet");
-								infowindow.open(map, marker);
-								console.log("just opened");
-							}
-                // return function() {
-								// 		console.log("not opened yet");
-                //     windows[i].open(map, marker);
-								// 		console.log("just opened");
-                //     for (var j = 0; j < windows.length; j++){
-                //       if(j != i){
-                //         windows[j].close();
-                //       }
-                //     }
-                // }
-            }(marker));
-						*/
-
+					i ++;
 					windows.push(infowindow);
           markers.push(marker);
 
