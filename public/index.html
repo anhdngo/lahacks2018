@@ -14,19 +14,24 @@
     <h3>My Google Maps Demo</h3>
 
 
+<!--
     <form action="/foursquare" method="post">
       <label for="input">Enter name: </label>
       <input id="input" type="text" name="location" value="food">
       <input type="submit" value="OK">
     </form>
-
-    <button type="button" onclick="getLatLong()">GetLatLong</button>
+-->
+    
+	  <input id="query">
+      <button type="button" onclick="queryFoursquare()">Search Places</button>
+    
 
     <div id="map"></div>
     
     <script>  
       var dataobj = {lat: 1.1,lng: 1.1}
-      var map = {}	
+      var map, heatmap;
+	  var query_name = document.getElementById("query").value;
 
       function initMap() {
 		//console.log(obj.lat);
@@ -41,7 +46,10 @@
         });
       }
 
-      function getLatLong() {
+      function queryFoursquare(query) {
+	    
+	    var query_name = document.getElementById("query").value;
+
         console.log(dataobj);
         var latlng = dataobj
 
@@ -57,7 +65,7 @@
     type: "GET",
     dataType: "jsonp",
     cache: false,
-    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=30&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=pho&v=20180331',
+    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=30&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
     success: function(data){
         console.log(data);
 
