@@ -31,7 +31,7 @@
     <div id="map"></div>
     
     <script>
-      var numdatapoints = 100;  
+      var numdatapoints = 1000;  
       var dataobj = {lat: 1.1,lng: 1.1}
       var map, heatmap, jsondata;
 	  var query_name = document.getElementById("query").value;
@@ -54,6 +54,11 @@
       };
 
       function updateHeatMap() {
+        //clear heatmap
+        if(heatmap){
+          heatmap.setMap(null);
+        }
+
         //create google heatmap
         heatmap = new google.maps.visualization.HeatmapLayer({
 		  data: getPoints(),
@@ -63,12 +68,11 @@
       }
 
       function getPoints() {
-        
+        //if jsondata is undefined, break out of function 
         if(!jsondata){
-          console.log("jsondata is undefined");
           return [];
         }
-        console.log("wubbadubbadubdub");
+
         var datapoints = [];
         for(var i = 0; i < jsondata.response.groups[0].items.length; i++){
           for(var j = 0; j < 1; j++){//jsondata.response.groups[0].items[i].venue.
