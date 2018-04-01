@@ -93,6 +93,7 @@
 		<h4>Find Trending Events
 			<form id="eventsearch">
 				<input id="trend">
+				<input id= 'trend_size'>
 				<button id="submitbtn" type="button" onclick="trendFoursquare()"></button>
 			</form>
 
@@ -260,19 +261,19 @@
           console.log("got it");
         }
         */
-        $.ajax({
-    type: "GET",
-    dataType: "jsonp",
-    cache: false,
-    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
-    success: function(data){
-        console.log(data);
-    	var base = data.response.groups[0].items
-    	$.each(base, function(index){
-    		var url = base[index].venue.url;
-    		var llat = base[index].venue.location.lat;
-    		var llng = base[index].venue.location.lng;
-    		var name = base[index].venue.name;
+	  $.ajax({
+	    type: "GET",
+	    dataType: "jsonp",
+	    cache: false,
+	    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
+	    success: function(data){
+	        console.log(data);
+	    	var base = data.response.groups[0].items
+	    	$.each(base, function(index){
+	    		var url = base[index].venue.url;
+	    		var llat = base[index].venue.location.lat;
+	    		var llng = base[index].venue.location.lng;
+	    		var name = base[index].venue.name;
 
     		//var icon = base[index].venue.categories[0].icon;
 /*
@@ -338,7 +339,6 @@
 	    		marker.bindPopup(content)
 	*/
 					});
-	      	jsondata = data;
 	      	updateMarkerMap();
 	      }
 	    });
