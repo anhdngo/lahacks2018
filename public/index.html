@@ -23,20 +23,9 @@
 		</nav>
 -->
 	</header>
-<<<<<<< HEAD
 
 	<div style="clear:both;"> </div>
 
-		<p class="blocks">Discover events in your community through More the Merrier</p>
-	<div class="blocks" style="width: 30%;">
-		<h4>Find an event</h4>
-
-		<br>
-
-=======
-			
-	<div style="clear:both;"> </div>
-	
 <!-- W3 Slideshow -->
 	<!-- Slideshow container -->
 <div class="slideshow-container">
@@ -67,32 +56,36 @@
 
 <!-- The dots/circles -->
 <div style="text-align:center">
-  <span class="dot" onclick="currentSlide(1)"></span> 
-  <span class="dot" onclick="currentSlide(2)"></span> 
-  <span class="dot" onclick="currentSlide(3)"></span> 
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
 </div>
-	
+
 		<p class="blocks"><strong>Discover</strong> events in your community through More the Merrier, or upload your own events to be viewable by the community.
 			<br><br>
 			<strong>Explore</strong> surrounding businesses, parks, or venues in the area to find out everything your growing communities have to offer!
 			<br><br>
 			<strong>Find</strong> out whether nearby venues provide services or accommodations you need to feel comfortable.
-		
+
 		</p>
 	<div class="blocks" style="width: 28%;">
 		<h4>Find an event</h4>
-		
+
 		<br>
 		<input id="query"><button type="button" onclick="queryFoursquare()">Search Places</button>
-	  
+
 	  <!--
->>>>>>> master
 		<form id="mapsearch" action="/foursquare" method="post">
 			<label for="input">Enter keyword: </label>
 			<input id="input" type="text" name="location" value="food">
 			<input id="submitbtn" type="submit" value="Search">
 		</form>
-<<<<<<< HEAD
+
+	<!-- I've ID'd both the "search" and "find location" button the same for easy styling
+		<button id="submitbtn" type="button" onclick="getLatLong()" style="margin-top:10;">
+			Find my location</button>
+-->
+
 		<div style="clear:both;"> </div>
 
 		<br>
@@ -104,54 +97,7 @@
 		<br>
 
 		<h4>Places nearby:</h4>
-	</div>
-
-    <div id="map" class="blocks"></div>
-
-		<script>
-		  var imported = require('../server.js')
-
-		  function initMap() {
-			//var obj = imported.getLatLngData()
-			//console.log(obj.lat);
-			var uluru = {lat: -25.363, lng: 131.044};
-			var map = new google.maps.Map(document.getElementById('map'), {
-			  zoom: 4,
-			  center: uluru
-			});
-			var marker = new google.maps.Marker({
-			  position: uluru,
-			  map: map
-			});
-		  }
-		</script>
-
-		<script async defer
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&callback=initMap">
-		</script>
-	</div>
-
-</body>
-</html>
-=======
-		
-	<!-- I've ID'd both the "search" and "find location" button the same for easy styling
-		<button id="submitbtn" type="button" onclick="getLatLong()" style="margin-top:10;">
-			Find my location</button>
--->
-		
-		<div style="clear:both;"> </div>		
-		
-		<br>
-		
-		<h4>We found these events:
-		
-		<br>
-		<br>
-		<br>
-		
-		<h4>Places nearby:</h4>
-			<div style="clear:both;"> </div>		
+			<div style="clear:both;"> </div>
 			<div>
 				<img class="nearbyphoto" src="#" alt="Nearby Location" style="margin-left:0">
 				<img class="nearbyphoto" src="#" alt="Nearby Location">
@@ -161,9 +107,9 @@
 
 <!-- google maps (anh) I've renamed buttons and added id/class names for styling-->
     <div id="map" class="blocks"></div>
-	
+
  <script>
-      var numdatapoints = 100;  
+      var numdatapoints = 100;
       var dataobj = {lat: 34,lng: -118}
       var map, heatmap, jsondata;
 	  var query_name = document.getElementById("query").value;
@@ -187,10 +133,10 @@
 		  data: getPoints(),
 		  map: map
 		});
-        
+
       }
       function getPoints() {
-        
+
         if(!jsondata){
           console.log("jsondata is undefined");
           return [];
@@ -207,7 +153,7 @@
         }
         console.log(datapoints);
         return datapoints;
-        
+
         /*
         return [
           new google.maps.LatLng(37.782551, -122.445368),
@@ -227,17 +173,17 @@
           new google.maps.LatLng(37.783842, -122.439591),
           new google.maps.LatLng(37.784147, -122.439668)
         ];
-       */ 
+       */
       }
       function queryFoursquare(query) {
-	    
+
 	    var query_name = document.getElementById("query").value;
         console.log(dataobj);
         var latlng = dataobj
         /*
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
-          
+
           document.getElementById("map").innerHTML = "hello world";
           console.log("got it");
         }
@@ -281,14 +227,13 @@
           console.log(data);
         }
       });
-      
+
     </script>
 	</div>
-	
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&libraries=visualization&callback=initMap"></script>
 	<script src="scripts.js"></script>
 </body>
 </html>
->>>>>>> master
