@@ -1,12 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>The More The Merrier</title>
+	<link href="https://fonts.googleapis.com/css?family=Quicksand|Sofia" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+	<title>The More the Merrier</title>
+
 </head>
 <body>
-  <h1>The More The Merrier?</h1>
+	<header>
+		<h1>more the merrier</h1>
+		<h2 id="welcome">New connections. New relationships. Building a better community.</h2>
+<!--		<nav id="navbar">
+			<a>create an event</a>
+			<div class="dropdown">
+			  <button class="dropbtn">find an event</button>
+			  <div class="dropdown-content">
+				<a href="#">sports games</a>
+				<a href="#">parties</a>
+				<a href="#">other</a>
+			  </div>
+			</div>
+		</nav>
+-->
+	</header>
+
+	<div style="clear:both;"> </div>
+
+		<p class="blocks">Discover events in your community through More the Merrier</p>
+	<div class="blocks" style="width: 30%;">
+		<h4>Find an event</h4>
+
+		<br>
+
+		<form id="mapsearch" action="/foursquare" method="post">
+			<label for="input">Enter keyword: </label>
+			<input id="input" type="text" name="location" value="food">
+			<input id="submitbtn" type="submit" value="Search">
+		</form>
+		<div style="clear:both;"> </div>
+
+		<br>
+
+		<h4>We found these events:
+
+		<br>
+		<br>
+		<br>
+
+		<h4>Places nearby:</h4>
+	</div>
+
+    <div id="map" class="blocks"></div>
+
+		<script>
+		  var imported = require('../server.js')
+
+		  function initMap() {
+			//var obj = imported.getLatLngData()
+			//console.log(obj.lat);
+			var uluru = {lat: -25.363, lng: 131.044};
+			var map = new google.maps.Map(document.getElementById('map'), {
+			  zoom: 4,
+			  center: uluru
+			});
+			var marker = new google.maps.Marker({
+			  position: uluru,
+			  map: map
+			});
+		  }
+		</script>
+
+		<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&callback=initMap">
+		</script>
+	</div>
+
 </body>
 </html>
