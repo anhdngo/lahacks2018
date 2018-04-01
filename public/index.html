@@ -72,7 +72,9 @@
 		<h4>Find an event</h4>
 
 		<br>
-		<input id="query"><button type="button" onclick="queryFoursquare()">Search Places</button>
+		<input id="query" placeholder="What are you looking for?">
+		<input id="coords" placeholder = "City">
+		<button type="button" onclick="queryFoursquare()">Search Places</button>
 
 	  <!--
 		<form id="mapsearch" action="/foursquare" method="post">
@@ -119,7 +121,6 @@
       var numdatapoints = 100;
       var dataobj = {lat: 34,lng: -118}
       var map, heatmap, jsondata;
-	  	var query_name = document.getElementById("query").value;
 			var trend_loc = document.getElementById("trend").value;
 			var latLng_list = {};
 			var windows = [];
@@ -250,6 +251,8 @@
       function queryFoursquare(query) {
 
 	    	var query_name = document.getElementById("query").value;
+				var coord_name = document.getElementById("coords").value;
+				console.log('coords is'+coord_name);
         console.log(dataobj);
         var latlng = dataobj
         /*
@@ -264,7 +267,7 @@
 	    type: "GET",
 	    dataType: "jsonp",
 	    cache: false,
-	    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
+	    url: 'https://api.foursquare.com/v2/venues/explore?near=' + coord_name + '&radius=2000&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
 	    success: function(data){
 	        console.log(data);
 	    	var base = data.response.groups[0].items
