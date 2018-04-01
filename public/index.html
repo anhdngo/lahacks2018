@@ -90,7 +90,11 @@
 
 		<br>
 
-		<h4>We found these events:
+		<h4>Find Trending Events
+			<form id="eventsearch">
+				<input id="trend">
+				<button id="submitbtn" type="button" onclick="trendFoursquare()"></button>
+			</form>
 
 		<br>
 		<br>
@@ -112,13 +116,19 @@
       var numdatapoints = 100;
       var dataobj = {lat: 34,lng: -118}
       var map, heatmap, jsondata;
-	  var query_name = document.getElementById("query").value;
+	  	var query_name = document.getElementById("query").value;
+			var trend_loc = document.getElementById("trend").value;
+			var latLng_list = {};
+			var windows = [];
+			var markers = [];
+
       function initMap() {
         //create google map
 		map = new google.maps.Map(document.getElementById('map'), {
           zoom: 4,
           center: {lat: dataobj.lat, lng: dataobj.lng}
         });
+
 		/*
         var marker = new google.maps.Marker({
           position: ,
@@ -126,7 +136,48 @@
         });
 		*/
         updateHeatMap();
+				updateMarkerMap();
       };
+
+			function updateMarkerMap() {
+
+				var windows = [];
+				var markers = [];
+        var i = 0;
+
+        for (var key in latLng_list){
+
+          var infowindow = new google.maps.InfoWindow({
+            content: latLng_list[key]["content"],
+            maxWidth: 50
+          });
+
+          windows.push(infowindow);
+
+          var marker = new google.maps.Marker({
+            position: latLng_list[key]["location"],
+            map: map,
+            title: 'info'
+          });
+
+          google.maps.event.addListener(marker, 'hover', (function(marker, i) {
+                return function() {
+                    windows[i].open(map, marker);
+                    for (var j = 0; j < windows.length; j++){
+                      if(j != i){
+                        windows[j].close();
+                      }
+                    }
+                }
+            })(marker, i));
+
+          markers.push(marker);
+          i ++;
+
+        }
+
+			}
+
       function updateHeatMap() {
         //create google heatmap
         heatmap = new google.maps.visualization.HeatmapLayer({
@@ -177,7 +228,7 @@
       }
       function queryFoursquare(query) {
 
-	    var query_name = document.getElementById("query").value;
+	    	var query_name = document.getElementById("query").value;
         console.log(dataobj);
         var latlng = dataobj
         /*
@@ -201,6 +252,7 @@
     		var llat = base[index].venue.location.lat;
     		var llng = base[index].venue.location.lng;
     		var name = base[index].venue.name;
+
     		//var icon = base[index].venue.categories[0].icon;
 /*
     		var myIcon = L.icon({
@@ -227,6 +279,49 @@
           console.log(data);
         }
       });
+
+			function trendFoursquare(){
+				latLng_list = {};
+		    var trend_loc = document.getElementById("trend").value;
+	      console.log(trend_loc);
+
+				$.ajax({
+			    type: "GET",
+			    dataType: "jsonp",
+			    cache: false,
+			    url: 'https://api.foursquare.com/v2/venues/explore?near=' + trend_loc + '&radius=2000&limit=10&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&q=Trending&v=20180331',
+			    success: function(data){
+	        	console.log(data);
+	    			var base = data.response.groups[0].items
+			    	$.each(base, function(index){
+			    		var name = base[index].venue.name;
+			    		var llat = base[index].venue.location.lat;
+			    		var llng = base[index].venue.location.lng;
+			    		var type = base[index].venue.categories[0].name;
+							var checkedIn = base[index].venue.stats.checkinsCount;
+
+							latLng_list[name] = {
+								'location': {lat: llat, lng: llng},
+								'content': "<h1>{name}</h1><br><p>This is a {type} and {checkedIn} people have checked in here.</p>"
+							};
+			    	  //var icon = base[index].venue.categories[0].icon;
+	/*
+	    		var myIcon = L.icon({
+	    		    iconUrl: icon,
+	    		    iconSize: [20, 20],
+	    		    iconAnchor: [10, 10],
+	    		    className: '4sq-icon'
+	    		});
+	    		var marker = L.marker([llat, llng], {icon: myIcon}).addTo(map);
+	    		var content = '<a href="' + url + '" />' + name + '</a>'
+	    		marker.bindPopup(content)
+	*/
+					});
+	      	jsondata = data;
+	      	updateMarkerMap();
+	      }
+	    });
+	   }
 
     </script>
 	</div>
