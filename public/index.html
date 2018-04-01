@@ -2,6 +2,8 @@
 <html>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&libraries=visualization&callback=initMap"></script>
+ 
   <head>
     <style>
        #map {
@@ -28,23 +30,79 @@
 
     <div id="map"></div>
     
-    <script>  
+    <script>
+      var numdatapoints = 100;  
       var dataobj = {lat: 1.1,lng: 1.1}
-      var map, heatmap;
+      var map, heatmap, jsondata;
 	  var query_name = document.getElementById("query").value;
 
       function initMap() {
-		//console.log(obj.lat);
-        var uluru = {lat: dataobj.lat, lng: dataobj.lng};
-        map = new google.maps.Map(document.getElementById('map'), {
+        //create google map
+		map = new google.maps.Map(document.getElementById('map'), {
           zoom: 4,
-          center: uluru
+          center: {lat: dataobj.lat, lng: dataobj.lng}
         });
+
+		/*
         var marker = new google.maps.Marker({
-          position: uluru,
+          position: ,
           map: map
         });
+		*/
+
+        updateHeatMap();
+      };
+
+      function updateHeatMap() {
+        //create google heatmap
+        heatmap = new google.maps.visualization.HeatmapLayer({
+		  data: getPoints(),
+		  map: map
+		});
+        
       }
+
+      function getPoints() {
+        
+        if(!jsondata){
+          console.log("jsondata is undefined");
+          return [];
+        }
+        console.log("wubbadubbadubdub");
+        var datapoints = [];
+        for(var i = 0; i < jsondata.response.groups[0].items.length; i++){
+          for(var j = 0; j < 1; j++){//jsondata.response.groups[0].items[i].venue.
+            datapoints.push(new google.maps.LatLng(
+              jsondata.response.groups[0].items[i].venue.location.lat,
+              jsondata.response.groups[0].items[i].venue.location.lng
+            ));
+          }
+        }
+        console.log(datapoints);
+        return datapoints;
+        
+        /*
+        return [
+          new google.maps.LatLng(37.782551, -122.445368),
+          new google.maps.LatLng(37.782745, -122.444586),
+          new google.maps.LatLng(37.782842, -122.443688),
+          new google.maps.LatLng(37.782919, -122.442815),
+          new google.maps.LatLng(37.782992, -122.442112),
+          new google.maps.LatLng(37.783100, -122.441461),
+          new google.maps.LatLng(37.783206, -122.440829),
+          new google.maps.LatLng(37.783273, -122.440324),
+          new google.maps.LatLng(37.783316, -122.440023),
+          new google.maps.LatLng(37.783357, -122.439794),
+          new google.maps.LatLng(37.783371, -122.439687),
+          new google.maps.LatLng(37.783368, -122.439666),
+          new google.maps.LatLng(37.783383, -122.439594),
+          new google.maps.LatLng(37.783508, -122.439525),
+          new google.maps.LatLng(37.783842, -122.439591),
+          new google.maps.LatLng(37.784147, -122.439668)
+        ];
+       */ 
+      }
+
 
       function queryFoursquare(query) {
 	    
@@ -65,7 +123,7 @@
     type: "GET",
     dataType: "jsonp",
     cache: false,
-    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=30&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
+    url: 'https://api.foursquare.com/v2/venues/explore?ll=' + latlng.lat + ',' + latlng.lng + '&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
     success: function(data){
         console.log(data);
 
@@ -77,7 +135,7 @@
     		var llat = base[index].venue.location.lat;
     		var llng = base[index].venue.location.lng;
     		var name = base[index].venue.name;
-    		var icon = base[index].venue.categories[0].icon;
+    		//var icon = base[index].venue.categories[0].icon;
 /*
     		var myIcon = L.icon({
     		    iconUrl: icon,
@@ -91,8 +149,12 @@
     		marker.bindPopup(content)
 */
     	})
-    }
-});
+
+      jsondata = data;
+      updateHeatMap();
+
+      }
+    });
       }
 
       $.ajax({
@@ -106,8 +168,9 @@
       
 
     </script>
+    <!--
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&callback=initMap">
-    </script>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC23xU5BZyTpbqTH-FaQWgUpgNGdswo-N0&libraries=visualization&callback=initMap"></script>
+    -->
   </body>
 </html>
