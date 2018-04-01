@@ -149,10 +149,9 @@
 
           var infowindow = new google.maps.InfoWindow({
             content: latLng_list[key]["content"],
-            maxWidth: 50
+            maxWidth: 100
           });
 
-          windows.push(infowindow);
 
           var marker = new google.maps.Marker({
             position: latLng_list[key]["location"],
@@ -160,17 +159,26 @@
             title: 'info'
           });
 
-          google.maps.event.addListener(marker, 'hover', (function(marker, i) {
-                return function() {
-                    windows[i].open(map, marker);
-                    for (var j = 0; j < windows.length; j++){
-                      if(j != i){
-                        windows[j].close();
-                      }
-                    }
-                }
-            })(marker, i));
+          google.maps.event.addListener(marker, 'hover', function(marker) {
+						console.log("created event listener");
+							return function(){
+								console.log("not opened yet");
+								infowindow.open(map, marker);
+								console.log("just opened");
+							}
+                // return function() {
+								// 		console.log("not opened yet");
+                //     windows[i].open(map, marker);
+								// 		console.log("just opened");
+                //     for (var j = 0; j < windows.length; j++){
+                //       if(j != i){
+                //         windows[j].close();
+                //       }
+                //     }
+                // }
+            }(marker));
 
+					windows.push(infowindow);
           markers.push(marker);
           i ++;
 
