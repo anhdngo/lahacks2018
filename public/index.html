@@ -112,7 +112,7 @@
       function initMap() {
         //create google map
 		map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
+          zoom: 17,
           center: {lat: dataobj.lat, lng: dataobj.lng}
         });
 		/*
@@ -128,6 +128,8 @@
 				windows = [];
 				markers = [];
 				i = 0;
+				map.zoom = 12;
+				
         for (var key in latLng_list){
           var infowindow = new google.maps.InfoWindow({
             content: latLng_list[key]["content"],
@@ -167,6 +169,7 @@
 			}
       function updateHeatMap() {
         //create google heatmap
+		map.zoom = 12;
         heatmap = new google.maps.visualization.HeatmapLayer({
 		  data: getPoints(),
 		  map: map
@@ -227,7 +230,7 @@
 	    type: "GET",
 	    dataType: "jsonp",
 	    cache: false,
-	    url: 'https://api.foursquare.com/v2/venues/explore?near=' + coord_name + '&radius=2000&limit=' + numdatapoints + '&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&query=' + query_name + '&v=20180331',
+	    url: 'https://api.foursquare.com/v2/venues/explore?near=' + coord_name + '&radius=2000&limit=' + numdatapoints + '&client_id=H1XAGAYX01CRIEIHMD3UIO33KW5MI0MLQOL0WKY4TLWKUAFH&client_secret=RV2U4VB5W1MEHIWUHZCAY0KVHUAFYIJSXT4UXUOYFXUUXZFQ&query=' + query_name + '&v=20180331',
 	    success: function(data){
 	        console.log(data);
 	    	var base = data.response.groups[0].items
@@ -274,7 +277,7 @@
 			    type: "GET",
 			    dataType: "jsonp",
 			    cache: false,
-			    url: 'https://api.foursquare.com/v2/venues/explore?near=' + trend_loc + '&radius=2000&limit=10&client_id=COHMOQH1IRCXSHOSCJQGCHMW0KDM15T2SL42SV4HEXZNCZ1O&client_secret=T10V523SUH04DKHMUVAUQSBECBLVCPMKHDR5BFJDHLX3I5CB&q=Trending&v=20180331',
+			    url: 'https://api.foursquare.com/v2/venues/explore?near=' + trend_loc + '&radius=2000&limit=10&client_id=H1XAGAYX01CRIEIHMD3UIO33KW5MI0MLQOL0WKY4TLWKUAFH&client_secret=RV2U4VB5W1MEHIWUHZCAY0KVHUAFYIJSXT4UXUOYFXUUXZFQ&q=Trending&v=20180331',
 			    success: function(data){
 	        	console.log(data);
 	    			var base = data.response.groups[0].items
@@ -284,7 +287,7 @@
 			    		var llng = base[index].venue.location.lng;
 			    		var type = base[index].venue.categories[0].name;
 							var checkedIn = base[index].venue.stats.checkinsCount;
-							
+							map.zoom = 17;
 							 recenterMap(llat, llng);
 							 
 							 
